@@ -3,7 +3,7 @@ RDA Hub provides stuff like flying, no-clipping. This hub is intended to troll C
 ## Executing
 In order to execute, you have to run the code below to run the script.
 ```lua
---Placeholder for some reason
+loadstring(game:HttpGet("https://"))
 ```
 ## How to use?
 The UI is user-friendly and it will guide you how to use this Hub.
