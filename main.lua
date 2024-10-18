@@ -3,7 +3,7 @@ local Players = game:GetService("Players")
 local Player = Players.LocalPlayer
 
 local Window = Rayfield:CreateWindow({ -- Make a window
-    Name = "RDA Hub | by @catlov_rr",
+    Name = "RDA Hub Alpha V.0.1.1 | By @catlov_rr",
     LoadingTitle = "Loading, please wait for the fun...",
     LoadingSubtitle = "by @catlov_rr",
     ConfigurationSaving = {
@@ -17,7 +17,7 @@ local Window = Rayfield:CreateWindow({ -- Make a window
     },
     KeySystem = false, -- Set this to true to use our key system
     KeySettings = {
-       Title = "RDA Hub | @catlov_rr",--ignore all these its scrapped
+       Title = "RDA Hub Key System | @catlov_rr",--ignore all these its scrapped
        Subtitle = "Key system",
        Note = "Join gg/JGHFYXbU",
        FileName = "RDAKey", -- It is recommended to use something unique as other scripts using Rayfield may overwrite your key file
@@ -52,8 +52,6 @@ local IY = Global:CreateButton({
       end
    end
 })
-
-local ChatSpam = Window:CreateTab("💬 | Chat Spamming Service")
 
 if game.PlaceId == 6764533218 then
    local Washiez = Window:CreateTab("💦 | Washiez Trolling Panel")
@@ -90,8 +88,7 @@ if game.PlaceId == 6764533218 then
             Actions = { -- Notification Buttons
                Ignore = {
                   Name = "Got it!",
-                  Callback = function()
-                  end
+                  Callback = function()end
                },
             },
          })
@@ -127,8 +124,7 @@ if game.PlaceId == 6764533218 then
             Actions = { -- Notification Buttons
                Ignore = {
                   Name = "Got it!",
-                  Callback = function()
-                  end
+                  Callback = function()end
                },
             },
          })
@@ -144,19 +140,49 @@ if game.PlaceId == 6764533218 then
       end
    })
 
-   local JoinRankDetector = false
-   local JoinDetector = Washiez:CreateToggle({
-      Name = "Automatic Joined Player's rank Detector",
+   local HRRankDetector = false
+   local HRJoinDetector = Washiez:CreateToggle({
+      Name = "Automatic HR joining detector",
       CurrentValue = false,
       Callback = function(Value)
-         JoinRankDetector = Value
+         HRRankDetector = Value
       end,
+   })
+
+   local MRRankDetector = false
+   local MRJoinDetector = Washiez:CreateToggle({
+      Name = "Automatic MR joining detector",
+      Callback = function(Value)
+         MRRankDetector = Value
+      end
+   })
+
+   local PlrJoinLeaderstat = false
+   local JoinedPlayerLeaderboard = Washiez:CreateToggle({
+      Name = "Automatic Leaderboard Set (Make Roles Leaderstats)",
+      Callback = function(value)
+         PlrJoinLeaderstat = value
+      end
+   })
+
+   local RoleRefresh = Washiez:CreateButton({
+      Name = "Refresh all player's group role",
+      Callback = function()
+         for i,v in ipairs(Players:GetPlayers()) do
+            if not v:WaitForChild("leaderstats"):FindFirstChild("Role") then
+               local RoleInstance = Instance.new("StringValue")
+               RoleInstance.Parent = v:WaitForChild("leaderstats")
+               RoleInstance.Name = "Role"
+               RoleInstance.Value = v:GetRoleInGroup(10261023)
+            end
+         end
+      end
    })
    
    game.Players.PlayerAdded:Connect(function(Plr) --detect player joining
-      if JoinRankDetector == true then
+      if HRJoinDetector == true then
          for _,Role in ipairs(MRs) do
-            if Role == Players:GetRoleInGroup(Plr) then
+            if Role == Players:GetRoleInGroup(10261023) then
                Rayfield:Notify({
                   Title = "Notification",
                   Content = "An MR joined.",
@@ -172,11 +198,12 @@ if game.PlaceId == 6764533218 then
                break
             end
          end
-         for _,Role in ipairs(HRs) do
-            if Role == Players:GetRoleInGroup(Plr) then
+      elseif MRRankDetector == true then
+         for _,Role in ipairs(MRs) do
+            if Role == Players:GetRoleInGroup(10261023) then
                Rayfield:Notify({
                   Title = "Notification",
-                  Content = "An MR joined.",
+                  Content = "An MR joined!",
                   Duration = 10,
                   Image = 4483362458,
                   Actions = { -- Notification Buttons
@@ -190,9 +217,16 @@ if game.PlaceId == 6764533218 then
             end
          end
       end
+
+      if PlrJoinLeaderstat == true then
+         local RoleInstance = Instance.new("StringValue")
+         RoleInstance.Parent = Plr:WaitForChild("leaderstats")
+         RoleInstance.Name = "Role"
+         RoleInstance.Value = Plr:GetRoleInGroup(10261023)
+      end
    end)
 
-   local CarFlinger = Global:CreateButton({
+   local CarFlinger = Washiez:CreateButton({
       Name = "Show car flinger",
       Callback = function()
          loadstring(game:HttpGet(('https://raw.githubusercontent.com/0Ben1/fe/main/obf_rf6iQURzu1fqrytcnLBAvW34C9N55kS9g9G3CKz086rC47M6632sEd4ZZYB0AYgV.lua.txt'), true))()
